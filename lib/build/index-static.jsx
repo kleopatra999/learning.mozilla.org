@@ -50,6 +50,7 @@ function generateWithPageHTML(url, options, pageHTML) {
         <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css"/>
         <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.min.css"/>
         <link rel="stylesheet" href="/vendor/mozilla-tabzilla/css/tabzilla.css" />
+        <link rel="stylesheet" href="/vendor/mofo-ui/mofo-ui.css" />
         <link rel="stylesheet" href={'/' + CSS_FILENAME}/>
         <OptimizelySubdomain />
         <Optimizely />
