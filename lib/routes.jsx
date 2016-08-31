@@ -2,10 +2,14 @@ var React = require('react');
 
 var ReactRouter = require('react-router');
 var Router = ReactRouter.Router;
+var IndexRedirect = ReactRouter.IndexRedirect;
 var Route = ReactRouter.Route;
 var Redirect = ReactRouter.Redirect;
 var IndexRoute = ReactRouter.IndexRoute;
 var locales = Object.keys(require('../dist/locales.json'));
+//Safety check
+var SUPPORTED_LOCALES = ['en-US'].filter(supportedLocale => locales.indexOf(supportedLocale) > -1);
+var MAKER_PARTY_LOCALES = ['de', 'fr', 'es', 'pl', 'it', 'nl', 'cs', 'bg'];
 
 
 // verify we have at least one locale
@@ -118,7 +122,6 @@ var routeElements = Object.keys(pages).map(function(path) {
   return <Route path={path} component={pages[path]} key={path}/>;
 });
 
-var makerPartyLocales = ['de', 'fr', 'es', 'pl', 'it', 'nl', 'cs', 'bg'];
 
 // <Redirect> elements
 var redirectElements = Object.keys(redirects).map(function(path) {
@@ -137,7 +140,7 @@ function buildRoutes() {
   var routes = [];
   var localeURLs = [];
 
-  locales.forEach(function(locale) {
+  SUPPORTED_LOCALES.forEach(function(locale) {
     routes.push(
       <Route key={locale} path={locale} component={require('../components/page.jsx')}>
         <IndexRoute component={require('../pages/home.jsx')} />
@@ -154,15 +157,16 @@ function buildRoutes() {
     //Add each locale's routes to the array of urls that the server uses for route matching
     urls.forEach(function(key) {
       var newkey = locale + "/" + key;
-      
+
       localeURLs.push(newkey);
     });
   });
 
-  makerPartyLocales.forEach((locale) => {
-    localeURLs.push(`${locale}/events`);
+  MAKER_PARTY_LOCALES.forEach((locale) => {
+    localeURLs.push(`${locale}`, `${locale}/events`);
     routes.push(
       <Route key={locale} path={locale} component={require('../components/page.jsx')}>
+        <IndexRedirect to="/" />
         <Route path="events" component={require('../pages/events.jsx')} />
       </Route>
     );
